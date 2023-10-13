@@ -40,4 +40,42 @@ a integridade entre nossa estrutura de classes e o banco de dados.
   - Existem anotações para realizar as persistências, ou seja, podemos atribuir valores ao atributo que será persistido
 no banco de dados.
 
+## Conexão a banco de dados
+O Spring Data JPA pode se conectar em qualquer banco ded dados relacional.
+- Toda a parte de configuração fica centralizada no arquivo `application.properties`,
+inclusive a de banco de dados, abaixo um exemplo de configuração de acesso ao banco de dados
+PostgreSQL, porém serve para todos.
+
+```
+#Opcional
+-> Se deseja exibir todo SQL gerado no console
+spring.jpa.show-sql=true
+
+-> O JPA é capaz de criar as tabelas do sistema conforme mapeamento
+--> Com o update ele faz o seguinte, ele verifica se já existe a tabela, 
+    caso exista, adiciona os campos novos, caso não exista ele cria a nova tabela
+spring.jpa.hibernate.ddl-auto=update
+
+#Obrigátorio de acordo com o seu banco de dados
+
+-> Determina a plataforma de interpretação de SQL,  assim como o driver, 
+   mantém uma melhor compatibilidade com o banco de dados
+spring.jpa.database-platform=org.hibernate.dialect.PostgreSQLDialect
+
+-> Driver do bd
+spring.datasource.driverClassName=org.postgresql.Driver
+
+-> Local que esta hospedado o banco de dados
+spring.datasource.url=jdbc:postgresql://localhost:5432/seu_db
+
+-> Credenciais do banco de dados
+spring.datasource.username=seu_user
+spring.datasource.password=seu_pass
+```
+
+Após, é necessário também incluir no nosso arquivo `pom.xml` a dependencia JDBC do banco de dados utilizado
+
+
+
+
 

@@ -22,7 +22,7 @@ public class StartApp implements CommandLineRunner {
         newUser.setUsername("israelemf");
         newUser.setPassword("12345");
 
-        // Salvando o usuario no banco de dados, utilizando os métodos previamento implementados na JpaRepository do Spring Data
+        // Salvando / Persistindo o usuario no banco de dados, utilizando os métodos previamento implementados na JpaRepository do Spring Data
         userRepository.save(newUser);
 
         // Exibe o toString da classe User dos usuarios salvos no banco, no console
