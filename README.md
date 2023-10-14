@@ -40,6 +40,72 @@ a integridade entre nossa estrutura de classes e o banco de dados.
   - Existem anotações para realizar as persistências, ou seja, podemos atribuir valores ao atributo que será persistido
 no banco de dados.
 
+## Repository
+
+É um padrão de projeto similar ao DAO (Data Access Object), e seu objetivo é abstrair
+o acesso a dados de forma genérica a partir do seu modelo de objeto.
+
+O Spring Data JPA facilita a implementação desse padrão Repository, através da Programação
+Orientada a Aspectos, que é um paradigma que permite organizar o código fonte de acordo com a
+importância de uso na aplicação e separar em módulos.
+
+O Spring Data Jpa nos fornece interfaces para facilitar o acesso aos dados, 
+como a interface JpaRepository que nos fornece métodos genéricos de CRUD já preparados.
+
+**Principais métodos que são disponibilizados pelo framework**
+- save
+  - Insere e atualiza os dados de uma entidade
+- findById
+  - Retorna o objeto buscando pelo ID
+- existsById
+  - Verifica a existência de um objeto pelo ID informado, retorna um boolean
+- findAll
+  - Retorna uma coleção contendo todos os registros da tabela do banco
+- delete
+  - Deleta um registro da tabela
+- count
+  - Retorna a quantidade de registros de uma tabela
+
+
+## Consultas Customizadas
+
+As duas maneiras de realizar consultar customizadas são chamadas de **QueryMethod** e **QueryOverride**
+
+### QueryMethod
+O Spring Data JPA se encarrega de interpretar a assinatura de um método (nome + parametros) para montar
+a JPQL (Linguagem SQL do JPA, utilizada no contexto de entidades / classes) correspondente.
+
+Exemplo:
+```
+public interface UserRepository extends Repository<User, Long> {
+  List<User> findByEmailAddressAndLastName(String emailAddress, String lastName);
+}
+```
+Com base na sintaxe acima, o JPA já consegue executar a consulta JPQL.
+
+Na documentação do Spring Data JPA existem inúmeras sintaxes para consultas, como and, or, between, equals, distinct, etc;
+
+
+### Query Override
+Agora imaginamos que vamos precisar montar uma query mais avançada e extensa, ficaria inviável utilizar o padrão QueryMethod.
+
+É ai que precisamos definir a consulta de forma manual, através da anotação **@Query**
+
+Exemplo:
+```
+public interface UserRepository extends Repository<User, Long> {
+
+  //QueryMethod
+  List<User> findByEmailAddressAndLastName(String emailAddress, String lastName);
+  User user = 
+  
+  
+  // QueryOverride
+  @Query("SELECT * FROM user WHERE user.name LIKE %:name%")
+  List<User> filterByName(@Param("name") String name);
+}
+```
+
 ## Conexão a banco de dados
 O Spring Data JPA pode se conectar em qualquer banco ded dados relacional.
 - Toda a parte de configuração fica centralizada no arquivo `application.properties`,
